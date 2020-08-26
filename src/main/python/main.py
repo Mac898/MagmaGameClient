@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow
 
 import Ui_chat
 import Ui_main
+import signal_slots
 import sys
 
 if __name__ == '__main__':
@@ -10,6 +11,7 @@ if __name__ == '__main__':
     window = QMainWindow()
     uimain = Ui_main.Ui_MainWindow()
     Ui_main.Ui_MainWindow.setupUi(uimain, window)
+    slots = signal_slots.slots(uimain)
     window.resize(563, 568)
     window.show()
     exit_code = appctxt.app.exec_()      # 2. Invoke appctxt.app.exec_()
