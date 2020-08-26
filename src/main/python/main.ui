@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
+    <width>556</width>
     <height>568</height>
    </rect>
   </property>
@@ -56,112 +56,133 @@
       <x>10</x>
       <y>380</y>
       <width>541</width>
-      <height>141</height>
+      <height>145</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Custom Two</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Custom Four</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Custom Five</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="checkBox">
-       <property name="text">
-        <string>Connected</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QCheckBox" name="checkBox_3">
-       <property name="text">
-        <string>Connected</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Custom One</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QCheckBox" name="checkBox_5">
-       <property name="text">
-        <string>Connected</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QCheckBox" name="checkBox_4">
-       <property name="text">
-        <string>Connected</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QCheckBox" name="checkBox_2">
-       <property name="text">
-        <string>Connected</string>
+        <string>Four</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Custom Three</string>
+        <string>Two</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit">
+     <item row="3" column="2">
+      <widget class="QCheckBox" name="checkBox_3">
        <property name="text">
-        <string>Port</string>
+        <string>On/Off</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Five</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QCheckBox" name="checkBox">
+       <property name="text">
+        <string>On/Off</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>One</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QCheckBox" name="checkBox_5">
+       <property name="text">
+        <string>On/Off</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QCheckBox" name="checkBox_4">
+       <property name="text">
+        <string>On/Off</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QCheckBox" name="checkBox_2">
+       <property name="text">
+        <string>On/Off</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="lineEdit">
        <property name="text">
-        <string>Port</string>
+        <string>999</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_3">
+      <widget class="QLineEdit" name="lineEdit_2">
        <property name="text">
-        <string>Port</string>
+        <string>999</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_4">
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Port</string>
+        <string>Three</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
+      <widget class="QLineEdit" name="lineEdit_4">
+       <property name="text">
+        <string>999</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEdit_3">
+       <property name="text">
+        <string>999</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
       <widget class="QLineEdit" name="lineEdit_5">
        <property name="text">
+        <string>999</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Number</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
         <string>Port</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>Toggle</string>
        </property>
       </widget>
      </item>
@@ -226,45 +247,66 @@
      <property name="verticalSpacing">
       <number>2</number>
      </property>
-     <item row="1" column="1">
+     <item row="2" column="1">
       <widget class="QCheckBox" name="minecraftCheckBox">
        <property name="text">
-        <string>Connected</string>
+        <string>On/Off</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="factorioCheckBox">
+       <property name="text">
+        <string>On/Off</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="factorioLabel">
        <property name="text">
         <string>Factorio</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QCheckBox" name="factorioCheckBox">
-       <property name="text">
-        <string>Connected</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="minecraftLabel">
-       <property name="text">
-        <string>Minecraft</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="1" column="2">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>IP: localhost:34197</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="2" column="2">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>IP: localhost:25565</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="minecraftLabel">
+       <property name="text">
+        <string>Minecraft</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>Game</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_15">
+       <property name="text">
+        <string>Toggle</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_16">
+       <property name="text">
+        <string>Connection IP</string>
        </property>
       </widget>
      </item>
@@ -276,7 +318,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>563</width>
+     <width>556</width>
      <height>21</height>
     </rect>
    </property>

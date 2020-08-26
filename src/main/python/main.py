@@ -33,6 +33,6 @@ if __name__ == '__main__':
     #sys.stdout set
     text_browser = uimain.textBrowser
     sys.stdout = port(text_browser)
-    
-    exit_code = appctxt.app.exec_()      
+
+    exit_code = appctxt.app.exec_()
     sys.exit(exit_code)

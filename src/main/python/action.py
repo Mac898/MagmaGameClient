@@ -19,7 +19,6 @@ class magmaGC_actions:
         factorio_port = self.actions_config['factorio']
         if self.uimain.factorioCheckBox.isChecked():
             print("Connecting Factorio!")
-            
             self.ssh_tunnel.stop()
             self.ssh_tunnel.add_remote_bind(factorio_port)
             self.ssh_tunnel.start()
@@ -31,16 +30,28 @@ class magmaGC_actions:
 
     def minecraft_connect(self):
         minecraft_port = self.actions_config['minecraft']
-        if self.uimain.factorioCheckBox.isChecked():
-            print("Connecting Factorio!")
-            
+        if self.uimain.minecraftCheckBox.isChecked():
+            print("Connecting Minecraft!")
             self.ssh_tunnel.stop()
             self.ssh_tunnel.add_remote_bind(minecraft_port)
             self.ssh_tunnel.start()
         else:
-            print("Disconnecting Factorio!")
+            print("Disconnecting Minecraft!")
             self.ssh_tunnel.stop()
             self.ssh_tunnel.remove_remote_bind(minecraft_port)
+            self.ssh_tunnel.start()
+    def custom_connect(self, num, port, custom_checkbox_list):
+        custom_port = port
+        list_num = num - 1
+        if custom_checkbox_list[list_num].isChecked():
+            print("Connecting Custom forward: "+str(num))
+            self.ssh_tunnel.stop()
+            self.ssh_tunnel.add_remote_bind(custom_port)
+            self.ssh_tunnel.start()
+        else:
+            print("Disconnecting Custom forward: "+str(num))
+            self.ssh_tunnel.stop()
+            self.ssh_tunnel.remove_remote_bind(custom_port)
             self.ssh_tunnel.start()
 
 
