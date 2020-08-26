@@ -19,8 +19,8 @@ class slots:
         self.uimain.minecraftCheckBox.clicked.connect(self.actions.minecraft_connect)
 
         #custom forwarding slots
-        self.uimain.checkBox.clicked.connect(self.actions.custom_connect(1, self.uimain.lineEdit.text(), custom_checkbox_list))
-        self.uimain.checkBox_2.clicked.connect(self.actions.custom_connect(2, self.uimain.lineEdit_2.text(), custom_checkbox_list))
-        self.uimain.checkBox_3.clicked.connect(self.actions.custom_connect(3, self.uimain.lineEdit_3.text(), custom_checkbox_list))
-        self.uimain.checkBox_4.clicked.connect(self.actions.custom_connect(4, self.uimain.lineEdit_4.text(), custom_checkbox_list))
-        self.uimain.checkBox_5.clicked.connect(self.actions.custom_connect(5, self.uimain.lineEdit_5.text(), custom_checkbox_list))
+        self.uimain.checkBox.clicked.connect(lambda: self.actions.custom_connect(1, self.uimain.lineEdit.text(), custom_checkbox_list))
+        self.uimain.checkBox_2.clicked.connect(lambda: self.actions.custom_connect(2, self.uimain.lineEdit_2.text(), custom_checkbox_list))
+        self.uimain.checkBox_3.clicked.connect(lambda: self.actions.custom_connect(3, self.uimain.lineEdit_3.text(), custom_checkbox_list))
+        self.uimain.checkBox_4.clicked.connect(lambda: self.actions.custom_connect(4, self.uimain.lineEdit_4.text(), custom_checkbox_list))
+        self.uimain.checkBox_5.clicked.connect(lambda: self.actions.custom_connect(5, self.uimain.lineEdit_5.text(), custom_checkbox_list))
