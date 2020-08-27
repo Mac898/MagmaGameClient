@@ -5,8 +5,7 @@ class magmaGS:
     def __init__(self, main_logger):
         self.main_logger = main_logger
         #define settings from config
-        default_forward = ("127.0.0.1", 1)
-        self.remote_list = [default_forward]
+        self.remote_list = [("127.0.0.1",6969)]
         self.creds_file = open("pass.credential", "r")
         self.creds_pass = self.creds_file.readline()
         self.ssh_config_file = open("ssh_config.json")
