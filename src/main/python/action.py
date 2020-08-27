@@ -3,10 +3,10 @@ import magmaGS
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class magmaGC_actions:
-    def __init__(self, ui_main, main_logger):
+    def __init__(self, ui_main, main_logger, ssh_pass):
         #set imports as part of self
         self.uimain = ui_main
-        self.ssh_tunnel = magmaGS.magmaGS(main_logger)
+        self.ssh_tunnel = magmaGS.magmaGS(main_logger, ssh_pass)
         
         #read config
         self.actions_config_file = open(ApplicationContext().get_resource("actions_config.json"))

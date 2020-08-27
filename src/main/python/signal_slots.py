@@ -6,10 +6,10 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 class slots:
-    def __init__(self, ui_main, main_logger):
+    def __init__(self, ui_main, main_logger, ssh_pass):
         print("Loading Slots")
         self.uimain = ui_main
-        self.actions = action.magmaGC_actions(self.uimain, main_logger)
+        self.actions = action.magmaGC_actions(self.uimain, main_logger, ssh_pass)
 
         #define list of custom checkboxes
         custom_checkbox_list = [self.uimain.checkBox, self.uimain.checkBox_2, self.uimain.checkBox_3, self.uimain.checkBox_4, self.uimain.checkBox_5]

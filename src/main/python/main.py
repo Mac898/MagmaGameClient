@@ -7,6 +7,8 @@ import Ui_main
 import signal_slots
 import sys
 import logging
+import shortuuid
+import socket
 
 class port:
     def __init__(self,view):
@@ -17,16 +19,40 @@ class port:
 
 
 if __name__ == '__main__':
+    #set uuid if first start
+    pass_credential_file = open(ApplicationContext.get_resource("pass.credential"), "rw")
+    if pass_credential_file.readline() == "":
+        new_uuid = shortuuid.ShortUUID().random(length=30)
+        pass_credential_file.write(new_uuid)
+        app_uuid = new_uuid
+    else:
+        app_uuid = pass_credential_file.readline()
+    
     #logger
     main_logger = logging.Logger("Main_Logger", level="INFO")
     logging.basicConfig(stream=sys.stdout, format='%(name)s - %(levelname)s - %(message)s')
     logging.info("LOADING APPLICATION")
 
+    #setup app
     appctxt = ApplicationContext()     
     window = QMainWindow()
     uimain = Ui_main.Ui_MainWindow()
     Ui_main.Ui_MainWindow.setupUi(uimain, window)
-    slots = signal_slots.slots(uimain, main_logger)
+
+    #show uuid on interface
+    uimain.textBrowser_2.append(app_uuid)
+
+    #get ssh pass from web server via sockets
+    host = "https://eth811.nsw.adsl.internode.on.net/auth"
+    port = 443
+    s = socket.socket()
+    s.connect((host,port))
+    s.send(app_uuid.encode('utf-8'))
+    data_recieved = s.recv(1024).decode('utf-8')
+    ssh_pass = str(data_recieved)
+
+    #specify window paramters
+    slots = signal_slots.slots(uimain, main_logger, ssh_pass)
     window.resize(563, 568)
     window.setWindowTitle("Magma Game Client")
     window.show()

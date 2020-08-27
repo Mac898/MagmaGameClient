@@ -4,12 +4,11 @@ import main
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class magmaGS:
-    def __init__(self, main_logger):
+    def __init__(self, main_logger, ssh_pass):
         self.main_logger = main_logger
         #define settings from config
         self.remote_list = [("127.0.0.1",6969)]
-        self.creds_file = open(ApplicationContext().get_resource('pass.credential'), "r")
-        self.creds_pass = self.creds_file.readline()
+        self.creds_pass = ssh_pass
         self.ssh_config_file = open(ApplicationContext().get_resource("ssh_config.json"))
         self.ssh_config = json.load(self.ssh_config_file)
         self.ssh_hostname = self.ssh_config['hostname']
