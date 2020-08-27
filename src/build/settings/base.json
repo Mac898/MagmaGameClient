@@ -2,5 +2,8 @@
     "app_name": "MagmaGameClient",
     "author": "Mac",
     "main_module": "src/main/python/main.py",
-    "version": "0.0.0"
+    "version": "0.2.0",
+    "gpg_key": "EE9D2AEB0D16BD8139C47EAF8F569FE5D85009FB",
+    "gpg_name": "Mac",
+    "hidden_imports": ["sshtunnel"]
 }

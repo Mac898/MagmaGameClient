@@ -1,14 +1,15 @@
 from sshtunnel import SSHTunnelForwarder, create_logger as SSHTF_create_logger
 import json
+import main
 
 class magmaGS:
     def __init__(self, main_logger):
         self.main_logger = main_logger
         #define settings from config
         self.remote_list = [("127.0.0.1",6969)]
-        self.creds_file = open("pass.credential", "r")
+        self.creds_file = main.ApplicationContext.get_resource("pass.credential")
         self.creds_pass = self.creds_file.readline()
-        self.ssh_config_file = open("ssh_config.json")
+        self.ssh_config_file = main.ApplicationContext.get_resource("ssh_config.json")
         self.ssh_config = json.load(self.ssh_config_file)
         self.ssh_hostname = self.ssh_config['hostname']
         self.ssh_port = self.ssh_config['port']
