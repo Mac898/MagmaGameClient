@@ -34,29 +34,27 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls.Material 2.12
-import QtQuick.Controls.Material.impl 2.12
-import QtQuick.Window 2.12
+import QtQuick 2.9
+import QtQuick.Controls 2.2
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Material 2.2
+import QtQuick.Controls.Material.impl 2.2
 
 T.Menu {
     id: control
 
     Material.elevation: 8
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             contentHeight + topPadding + bottomPadding)
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                            contentItem ? contentItem.implicitWidth + leftPadding + rightPadding : 0)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
+                             contentItem ? contentItem.implicitHeight : 0) + topPadding + bottomPadding
 
     margins: 0
-    verticalPadding: 8
+    topPadding: 8
+    bottomPadding: 8
 
-    transformOrigin: !cascade ? Item.Top : (mirrored ? Item.TopRight : Item.TopLeft)
-
-    delegate: MenuItem { }
+    transformOrigin: Item.Top
 
     enter: Transition {
         // grow_fade_in
@@ -74,18 +72,18 @@ T.Menu {
         implicitHeight: contentHeight
 
         model: control.contentModel
-        interactive: Window.window
-                        ? contentHeight + control.topPadding + control.bottomPadding > Window.window.height
-                        : false
+        // TODO: improve this?
+        interactive: ApplicationWindow.window ? contentHeight > ApplicationWindow.window.height : false
         clip: true
-        currentIndex: control.currentIndex
+        keyNavigationWraps: false
+        currentIndex: -1
 
         ScrollIndicator.vertical: ScrollIndicator {}
     }
 
     background: Rectangle {
         implicitWidth: 200
-        implicitHeight: control.Material.menuItemHeight
+        implicitHeight: 48
 
         radius: 3
         color: control.Material.dialogColor
@@ -94,15 +92,5 @@ T.Menu {
         layer.effect: ElevationEffect {
             elevation: control.Material.elevation
         }
-    }
-
-    T.Overlay.modal: Rectangle {
-        color: control.Material.backgroundDimColor
-        Behavior on opacity { NumberAnimation { duration: 150 } }
-    }
-
-    T.Overlay.modeless: Rectangle {
-        color: control.Material.backgroundDimColor
-        Behavior on opacity { NumberAnimation { duration: 150 } }
     }
 }

@@ -37,7 +37,6 @@
 **
 ****************************************************************************/
 
-import QtQml 2.14 as Qml
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
@@ -172,16 +171,6 @@ Control {
     */
     property bool tickmarksEnabled: false
 
-    /*!
-        \qmlproperty bool Slider::wheelEnabled
-
-        This property determines whether the control handles wheel events.
-        The default value is \c true.
-
-        \since QtQuick.Controls 1.6
-    */
-    property alias wheelEnabled: wheelarea.enabled
-
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
 
@@ -311,12 +300,11 @@ Control {
     // During the drag, we simply ignore the position set from the range, this
     // means that setting a value while dragging will not "interrupt" the
     // dragging activity.
-    Qml.Binding {
+    Binding {
         when: !mouseArea.drag.active
         target: fakeHandle
         property: __horizontal ? "x" : "y"
         value: range.position
-        restoreMode: Binding.RestoreBinding
     }
 
     WheelArea {
@@ -333,14 +321,14 @@ Control {
         onVerticalWheelMoved: {
             if (verticalDelta !== 0) {
                 var delta = Math.abs(verticalDelta)*step > stepSize ? verticalDelta*step : verticalDelta/Math.abs(verticalDelta)*stepSize
-                range.position = range.positionForValue(value - delta * (inverted ? 1 : -1))
+                value -= delta * (inverted ? 1 : -1)
             }
         }
 
         onHorizontalWheelMoved: {
             if (horizontalDelta !== 0) {
                 var delta = Math.abs(horizontalDelta)*step > stepSize ? horizontalDelta*step : horizontalDelta/Math.abs(horizontalDelta)*stepSize
-                range.position = range.positionForValue(value + delta * (inverted ? 1 : -1))
+                value += delta * (inverted ? 1 : -1)
             }
         }
     }

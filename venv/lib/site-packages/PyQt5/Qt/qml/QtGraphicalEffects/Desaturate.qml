@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtGraphicalEffects.private 1.12
+import QtQuick 2.0
+import QtGraphicalEffects.private 1.0
 
 /*!
     \qmltype Desaturate
@@ -122,7 +122,6 @@ Item {
     SourceProxy {
         id: sourceProxy
         input: rootItem.source
-        interpolation: input && input.smooth ? SourceProxy.LinearInterpolation : SourceProxy.NearestInterpolation
     }
 
     ShaderEffectSource {
@@ -142,6 +141,16 @@ Item {
 
         anchors.fill: parent
 
-        fragmentShader: "qrc:/qt-project.org/imports/QtGraphicalEffects/shaders/desaturate.frag"
+        fragmentShader: "
+            varying highp vec2 qt_TexCoord0;
+            uniform highp float qt_Opacity;
+            uniform lowp sampler2D source;
+            uniform highp float desaturation;
+            void main(void) {
+                lowp vec4 textureColor = texture2D(source, qt_TexCoord0.st);
+                lowp float grayColor = (textureColor.r + textureColor.g + textureColor.b) / 3.0;
+                gl_FragColor = mix(textureColor, vec4(vec3(grayColor), textureColor.a), desaturation) * qt_Opacity;
+            }
+        "
     }
 }

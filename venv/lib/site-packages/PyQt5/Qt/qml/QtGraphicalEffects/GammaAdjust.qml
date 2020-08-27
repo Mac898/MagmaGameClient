@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtGraphicalEffects.private 1.12
+import QtQuick 2.0
+import QtGraphicalEffects.private 1.0
 
 /*!
     \qmltype GammaAdjust
@@ -159,7 +159,6 @@ luminance = pow(original_luminance, 1.0 / gamma); // The luminance is assumed to
     SourceProxy {
         id: sourceProxy
         input: rootItem.source
-        interpolation: input && input.smooth ? SourceProxy.LinearInterpolation : SourceProxy.NearestInterpolation
     }
 
     ShaderEffectSource {
@@ -179,6 +178,17 @@ luminance = pow(original_luminance, 1.0 / gamma); // The luminance is assumed to
 
         anchors.fill: parent
 
-        fragmentShader: "qrc:/qt-project.org/imports/QtGraphicalEffects/shaders/gammaadjust.frag"
+        fragmentShader: "
+            varying highp vec2 qt_TexCoord0;
+            uniform highp float qt_Opacity;
+            uniform lowp sampler2D source;
+            uniform highp float gamma;
+            void main(void) {
+                highp vec4 originalColor = texture2D(source, qt_TexCoord0.st);
+                originalColor.rgb = originalColor.rgb / max(1.0/256.0, originalColor.a);
+                highp vec3 adjustedColor = pow(originalColor.rgb, vec3(gamma));
+                gl_FragColor = vec4(adjustedColor * originalColor.a, originalColor.a) * qt_Opacity;
+            }
+        "
     }
 }

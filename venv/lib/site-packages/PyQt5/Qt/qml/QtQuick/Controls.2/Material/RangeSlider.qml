@@ -34,27 +34,26 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls.impl 2.12
-import QtQuick.Controls.Material 2.12
-import QtQuick.Controls.Material.impl 2.12
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Material 2.2
+import QtQuick.Controls.Material.impl 2.2
 
 T.RangeSlider {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            first.implicitHandleWidth + leftPadding + rightPadding,
-                            second.implicitHandleWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             first.implicitHandleHeight + topPadding + bottomPadding,
-                             second.implicitHandleHeight + topPadding + bottomPadding)
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+        Math.max(first.handle ? first.handle.implicitWidth : 0,
+                 second.handle ? second.handle.implicitWidth : 0) + leftPadding + rightPadding)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
+        Math.max(first.handle ? first.handle.implicitHeight : 0,
+                 second.handle ? second.handle.implicitHeight : 0) + topPadding + bottomPadding)
 
     padding: 6
 
     first.handle: SliderHandle {
-        x: control.leftPadding + (control.horizontal ? control.first.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.first.visualPosition * (control.availableHeight - height))
+        x: control.leftPadding + (horizontal ? control.first.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
+        y: control.topPadding + (horizontal ? (control.availableHeight - height) / 2 : control.first.visualPosition * (control.availableHeight - height))
         value: first.value
         handleHasFocus: activeFocus
         handlePressed: first.pressed
@@ -62,8 +61,8 @@ T.RangeSlider {
     }
 
     second.handle: SliderHandle {
-        x: control.leftPadding + (control.horizontal ? control.second.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.second.visualPosition * (control.availableHeight - height))
+        x: control.leftPadding + (horizontal ? control.second.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
+        y: control.topPadding + (horizontal ? (control.availableHeight - height) / 2 : control.second.visualPosition * (control.availableHeight - height))
         value: second.value
         handleHasFocus: activeFocus
         handlePressed: second.pressed
@@ -71,22 +70,24 @@ T.RangeSlider {
     }
 
     background: Rectangle {
-        x: control.leftPadding + (control.horizontal ? 0 : (control.availableWidth - width) / 2)
-        y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : 0)
-        implicitWidth: control.horizontal ? 200 : 48
-        implicitHeight: control.horizontal ? 48 : 200
-        width: control.horizontal ? control.availableWidth : 4
-        height: control.horizontal ? 4 : control.availableHeight
-        scale: control.horizontal && control.mirrored ? -1 : 1
-        color: control.enabled ? Color.transparent(control.Material.accentColor, 0.33) : control.Material.sliderDisabledColor
+        x: control.leftPadding + (horizontal ? 0 : (control.availableWidth - width) / 2)
+        y: control.topPadding + (horizontal ? (control.availableHeight - height) / 2 : 0)
+        implicitWidth: horizontal ? 200 : 48
+        implicitHeight: horizontal ? 48 : 200
+        width: horizontal ? control.availableWidth : 1
+        height: horizontal ? 1 : control.availableHeight
+        color: control.Material.foreground
+        scale: horizontal && control.mirrored ? -1 : 1
+
+        readonly property bool horizontal: control.orientation === Qt.Horizontal
 
         Rectangle {
-            x: control.horizontal ? control.first.position * parent.width : 0
-            y: control.horizontal ? 0 : control.second.visualPosition * parent.height
-            width: control.horizontal ? control.second.position * parent.width - control.first.position * parent.width : 4
-            height: control.horizontal ? 4 : control.second.position * parent.height - control.first.position * parent.height
+            x: parent.horizontal ? control.first.position * parent.width : -1
+            y: parent.horizontal ? -1 : control.second.visualPosition * parent.height + 3
+            width: parent.horizontal ? control.second.position * parent.width - control.first.position * parent.width - 3 : 3
+            height: parent.horizontal ? 3 : control.second.position * parent.height - control.first.position * parent.height - 3
 
-            color: control.enabled ? control.Material.accentColor : control.Material.sliderDisabledColor
+            color: control.Material.accentColor
         }
     }
 }

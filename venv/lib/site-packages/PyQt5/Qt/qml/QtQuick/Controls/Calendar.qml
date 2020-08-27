@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.9
-import QtQuick.Controls 1.5
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.3
     \ingroup controls
-    \brief Provides a way to select dates from a calendar.
+    \brief Provides a way to select dates from a calendar
 
     \image calendar.png
 
@@ -202,27 +202,20 @@ Control {
     property int dayOfWeekFormat: Locale.ShortFormat
 
     /*!
-        \qmlproperty object Calendar::locale
-        \since QtQuick.Controls 1.6
+        The locale that this calendar should use to display itself.
 
-        This property controls the locale that this calendar uses to display
-        itself.
+        Affects how dates and day names are localized, as well as which
+        day is considered the first in a week.
 
-        The locale affects how dates and day names are localized, as well as
-        which day is considered the first in a week.
-
-        The following example sets an Australian locale:
+        To set an Australian locale, for example:
 
         \code
         locale: Qt.locale("en_AU")
         \endcode
 
-        The default value is equivalent to \c Qt.locale().
+        The default locale is \c Qt.locale().
     */
-    property var locale: Qt.locale()
-
-    // left for compatibility reasons; can be removed in next minor version/Qt 6
-    property alias __locale: calendar.locale
+    property var __locale: Qt.locale()
 
     /*!
         \internal
@@ -231,7 +224,7 @@ Control {
         populate the dates available to the user.
     */
     property CalendarModel __model: CalendarModel {
-        locale: calendar.locale
+        locale: calendar.__locale
 
         // TODO: don't set the hour when QTBUG-56787 is fixed
         visibleDate: new Date(visibleYear, visibleMonth, 1, 12)
@@ -244,7 +237,7 @@ Control {
 
         Emitted when the mouse hovers over a valid date in the calendar.
 
-        \e date is the date that was hovered over.
+        \a date is the date that was hovered over.
 
         The corresponding handler is \c onHovered.
     */
@@ -257,7 +250,7 @@ Control {
 
         This is also emitted when dragging the mouse to another date while it is pressed.
 
-        \e date is the date that the mouse was pressed on.
+        \a date is the date that the mouse was pressed on.
 
         The corresponding handler is \c onPressed.
     */
@@ -268,7 +261,7 @@ Control {
 
         Emitted when the mouse is released over a valid date in the calendar.
 
-        \e date is the date that the mouse was released over.
+        \a date is the date that the mouse was released over.
 
         The corresponding handler is \c onReleased.
     */
@@ -279,7 +272,7 @@ Control {
 
         Emitted when the mouse is clicked on a valid date in the calendar.
 
-        \e date is the date that the mouse was clicked on.
+        \a date is the date that the mouse was clicked on.
 
         The corresponding handler is \c onClicked.
     */
@@ -290,7 +283,7 @@ Control {
 
         Emitted when the mouse is double-clicked on a valid date in the calendar.
 
-        \e date is the date that the mouse was double-clicked on.
+        \a date is the date that the mouse was double-clicked on.
 
         The corresponding handler is \c onDoubleClicked.
     */
@@ -302,7 +295,7 @@ Control {
 
         Emitted when the mouse is pressed and held on a valid date in the calendar.
 
-        \e date is the date that the mouse was pressed on.
+        \a date is the date that the mouse was pressed on.
 
         The corresponding handler is \c onPressAndHold.
     */

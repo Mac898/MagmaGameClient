@@ -34,20 +34,21 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls.Material 2.12
-import QtQuick.Controls.Material.impl 2.12
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Material 2.2
+import QtQuick.Controls.Material.impl 2.2
 
 T.Drawer {
     id: control
 
-    parent: T.Overlay.overlay
+    parent: T.ApplicationWindow.overlay
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             contentHeight + topPadding + bottomPadding)
+    implicitWidth: Math.max(background ? background.implicitWidth : 0, contentWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0, contentHeight + topPadding + bottomPadding)
+
+    contentWidth: contentItem.implicitWidth || (contentChildren.length === 1 ? contentChildren[0].implicitWidth : 0)
+    contentHeight: contentItem.implicitHeight || (contentChildren.length === 1 ? contentChildren[0].implicitHeight : 0)
 
     topPadding: !dim && edge === Qt.BottomEdge && Material.elevation === 0
     leftPadding: !dim && edge === Qt.RightEdge && Material.elevation === 0
@@ -77,15 +78,5 @@ T.Drawer {
             elevation: control.Material.elevation
             fullHeight: true
         }
-    }
-
-    T.Overlay.modal: Rectangle {
-        color: control.Material.backgroundDimColor
-        Behavior on opacity { NumberAnimation { duration: 150 } }
-    }
-
-    T.Overlay.modeless: Rectangle {
-        color: control.Material.backgroundDimColor
-        Behavior on opacity { NumberAnimation { duration: 150 } }
     }
 }

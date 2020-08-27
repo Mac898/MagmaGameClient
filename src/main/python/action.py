@@ -1,5 +1,6 @@
 import sys, json
 import magmaGS
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class magmaGC_actions:
     def __init__(self, ui_main, main_logger):
@@ -8,7 +9,7 @@ class magmaGC_actions:
         self.ssh_tunnel = magmaGS.magmaGS(main_logger)
         
         #read config
-        self.actions_config_file = main.ApplicationContext.get_resource("actions_config.json")
+        self.actions_config_file = open(ApplicationContext().get_resource("actions_config.json"))
         self.actions_config = json.load(self.actions_config_file)
         print(self.actions_config)
 

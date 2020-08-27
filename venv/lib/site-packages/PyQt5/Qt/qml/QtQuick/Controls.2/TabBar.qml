@@ -34,18 +34,19 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
 
 T.TabBar {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
                              contentHeight + topPadding + bottomPadding)
 
     spacing: 1
+    contentHeight: 40
 
     contentItem: ListView {
         model: control.contentModel
@@ -63,7 +64,5 @@ T.TabBar {
         preferredHighlightEnd: width - 40
     }
 
-    background: Rectangle {
-        color: control.palette.window
-    }
+    background: Rectangle { }
 }

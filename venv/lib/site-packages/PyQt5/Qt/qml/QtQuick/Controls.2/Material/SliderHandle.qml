@@ -34,9 +34,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Controls.Material 2.12
-import QtQuick.Controls.Material.impl 2.12
+import QtQuick 2.9
+import QtQuick.Controls.Material 2.2
+import QtQuick.Controls.Material.impl 2.2
 
 Item {
     id: root
@@ -48,6 +48,7 @@ Item {
     property bool handlePressed: false
     property bool handleHovered: false
     readonly property int initialSize: 13
+    readonly property bool horizontal: control.orientation === Qt.Horizontal
     readonly property var control: parent
 
     Rectangle {
@@ -55,8 +56,8 @@ Item {
         width: parent.width
         height: parent.height
         radius: width / 2
+        color: root.control.Material.accentColor
         scale: root.handlePressed ? 1.5 : 1
-        color: control.enabled ? root.control.Material.accentColor : root.control.Material.sliderDisabledColor
 
         Behavior on scale {
             NumberAnimation {
@@ -71,6 +72,6 @@ Item {
         width: 22; height: 22
         pressed: root.handlePressed
         active: root.handlePressed || root.handleHasFocus || root.handleHovered
-        color: root.control.Material.highlightedRippleColor
+        color: control.Material.rippleColor
     }
 }

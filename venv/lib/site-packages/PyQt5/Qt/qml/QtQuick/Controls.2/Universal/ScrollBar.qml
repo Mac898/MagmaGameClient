@@ -34,20 +34,19 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls.Universal 2.12
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Universal 2.2
 
 T.ScrollBar {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             implicitContentHeight + topPadding + bottomPadding)
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                            contentItem.implicitWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
+                             contentItem.implicitHeight + topPadding + bottomPadding)
 
     visible: control.policy !== T.ScrollBar.AlwaysOff
-    minimumSize: orientation == Qt.Horizontal ? height / width : width / height
 
     // TODO: arrows
 
@@ -79,14 +78,14 @@ T.ScrollBar {
     transitions: [
         Transition {
             to: "active"
-            NumberAnimation { targets: [control.contentItem, control.background]; property: "opacity"; to: 1.0 }
+            NumberAnimation { targets: [contentItem, background]; property: "opacity"; to: 1.0 }
         },
         Transition {
             from: "active"
             SequentialAnimation {
-                PropertyAction{ targets: [control.contentItem, control.background]; property: "opacity"; value: 1.0 }
+                PropertyAction{ targets: [contentItem, background]; property: "opacity"; value: 1.0 }
                 PauseAnimation { duration: 3000 }
-                NumberAnimation { targets: [control.contentItem, control.background]; property: "opacity"; to: 0.0 }
+                NumberAnimation { targets: [contentItem, background]; property: "opacity"; to: 0.0 }
             }
         }
     ]

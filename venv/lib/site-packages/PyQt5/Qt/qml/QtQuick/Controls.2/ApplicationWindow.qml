@@ -34,22 +34,22 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick 2.9
+import QtQuick.Window 2.3
+import QtQuick.Controls 2.2
+import QtQuick.Controls.impl 2.2
+import QtQuick.Templates 2.2 as T
 
 T.ApplicationWindow {
     id: window
 
-    color: palette.window
+    color: Default.backgroundColor
 
     overlay.modal: Rectangle {
-        color: Color.transparent(window.palette.shadow, 0.5)
+        color: Default.overlayModalColor
     }
 
     overlay.modeless: Rectangle {
-        color: Color.transparent(window.palette.shadow, 0.12)
+        color: Default.overlayDimColor
     }
 }

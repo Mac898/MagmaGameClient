@@ -34,28 +34,30 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls 2.2
+import QtQuick.Controls.impl 2.2
 
 T.Dialog {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentWidth + leftPadding + rightPadding,
-                            implicitHeaderWidth,
-                            implicitFooterWidth)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             contentHeight + topPadding + bottomPadding
-                             + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
-                             + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                            header && header.visible ? header.implicitWidth : 0,
+                            footer && footer.visible ? footer.implicitWidth : 0,
+                            contentWidth > 0 ? contentWidth + leftPadding + rightPadding : 0)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
+                             (header && header.visible ? header.implicitHeight + spacing : 0)
+                             + (footer && footer.visible ? footer.implicitHeight + spacing : 0)
+                             + (contentHeight > 0 ? contentHeight + topPadding + bottomPadding : 0))
+
+    contentWidth: contentItem.implicitWidth || (contentChildren.length === 1 ? contentChildren[0].implicitWidth : 0)
+    contentHeight: contentItem.implicitHeight || (contentChildren.length === 1 ? contentChildren[0].implicitHeight : 0)
 
     padding: 12
 
     background: Rectangle {
-        color: control.palette.window
-        border.color: control.palette.dark
+        border.color: Default.frameDarkColor
     }
 
     header: Label {
@@ -68,19 +70,10 @@ T.Dialog {
             x: 1; y: 1
             width: parent.width - 2
             height: parent.height - 1
-            color: control.palette.window
         }
     }
 
     footer: DialogButtonBox {
         visible: count > 0
-    }
-
-    T.Overlay.modal: Rectangle {
-        color: Color.transparent(control.palette.shadow, 0.5)
-    }
-
-    T.Overlay.modeless: Rectangle {
-        color: Color.transparent(control.palette.shadow, 0.12)
     }
 }

@@ -34,23 +34,22 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Universal 2.2
 
 T.SpinBox {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + 16 +
-                            up.implicitIndicatorWidth +
-                            down.implicitIndicatorWidth)
-    implicitHeight: Math.max(implicitContentHeight + topPadding + bottomPadding,
-                             implicitBackgroundHeight,
-                             up.implicitIndicatorHeight,
-                             down.implicitIndicatorHeight)
+                            (up.indicator ? up.indicator.implicitWidth : 0) +
+                            (down.indicator ? down.indicator.implicitWidth : 0))
+    implicitHeight: Math.max(contentItem.implicitHeight + topPadding + bottomPadding,
+                             background ? background.implicitHeight : 0,
+                             up.indicator ? up.indicator.implicitHeight : 0,
+                             down.indicator ? down.indicator.implicitHeight : 0)
+    baselineOffset: contentItem.y + contentItem.baselineOffset
 
     // TextControlThemePadding + 2 (border)
     padding: 12
@@ -68,7 +67,7 @@ T.SpinBox {
     }
 
     contentItem: TextInput {
-        text: control.displayText
+        text: control.textFromValue(control.value, control.locale)
 
         font: control.font
         color: !enabled ? control.Universal.chromeDisabledLowColor :
@@ -100,12 +99,14 @@ T.SpinBox {
             opacity: control.activeFocus && !control.up.pressed ? 0.4 : 1.0
         }
 
-        ColorImage {
+        Image {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
-            color: !enabled ? control.Universal.chromeDisabledLowColor :
-                              control.activeFocus ? control.Universal.chromeBlackHighColor : control.Universal.baseHighColor
-            source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/Universal/images/" + (control.mirrored ? "left" : "right") + "arrow.png"
+            source: "image://universal/" + (control.mirrored ? "left" : "right") + "arrow/"
+                    + (!enabled ? control.Universal.chromeDisabledLowColor :
+                                  control.activeFocus ? control.Universal.chromeBlackHighColor : control.Universal.baseHighColor)
+            sourceSize.width: width
+            sourceSize.height: height
         }
     }
 
@@ -126,12 +127,14 @@ T.SpinBox {
             opacity: control.activeFocus && !control.down.pressed ? 0.4 : 1.0
         }
 
-        ColorImage {
+        Image {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
-            color: !enabled ? control.Universal.chromeDisabledLowColor :
-                              control.activeFocus ? control.Universal.chromeBlackHighColor : control.Universal.baseHighColor
-            source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/Universal/images/" + (control.mirrored ? "right" : "left") + "arrow.png"
+            source: "image://universal/" + (control.mirrored ? "right" : "left") + "arrow/"
+                    + (!enabled ? control.Universal.chromeDisabledLowColor :
+                                  control.activeFocus ? control.Universal.chromeBlackHighColor : control.Universal.baseHighColor)
+            sourceSize.width: width
+            sourceSize.height: height
         }
     }
 

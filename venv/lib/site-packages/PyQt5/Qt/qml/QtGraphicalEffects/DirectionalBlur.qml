@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtGraphicalEffects.private 1.12
+import QtQuick 2.0
+import QtGraphicalEffects.private 1.0
 
 /*!
     \qmltype DirectionalBlur
@@ -85,7 +85,7 @@ Item {
     property variant source
 
     /*!
-        This property defines the perceived amount of movement for each pixel.
+        This property defines the percieved amount of movement for each pixel.
         The movement is divided evenly to both sides of each pixel.
 
         The quality of the blur depends on \l{DirectionalBlur::samples}{samples}
@@ -263,10 +263,7 @@ Item {
         "
 
         function buildFragmentShader() {
-            var shader = ""
-            if (GraphicsInfo.profile === GraphicsInfo.OpenGLCoreProfile)
-                shader += "#version 150 core\n#define varying in\n#define texture2D texture\nout vec4 fragColor;\n#define gl_FragColor fragColor\n"
-            shader += fragmentShaderSkeleton
+            var shader = fragmentShaderSkeleton
             var expandSteps = ""
 
             if (transparentBorder) {

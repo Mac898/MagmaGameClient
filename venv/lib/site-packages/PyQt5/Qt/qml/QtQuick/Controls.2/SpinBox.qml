@@ -34,22 +34,23 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick 2.9
+import QtQuick.Controls 2.2
+import QtQuick.Controls.impl 2.2
+import QtQuick.Templates 2.2 as T
 
 T.SpinBox {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + 2 * padding +
-                            up.implicitIndicatorWidth +
-                            down.implicitIndicatorWidth)
-    implicitHeight: Math.max(implicitContentHeight + topPadding + bottomPadding,
-                             implicitBackgroundHeight,
-                             up.implicitIndicatorHeight,
-                             down.implicitIndicatorHeight)
+                            (up.indicator ? up.indicator.implicitWidth : 0) +
+                            (down.indicator ? down.indicator.implicitWidth : 0))
+    implicitHeight: Math.max(contentItem.implicitHeight + topPadding + bottomPadding,
+                             background ? background.implicitHeight : 0,
+                             up.indicator ? up.indicator.implicitHeight : 0,
+                             down.indicator ? down.indicator.implicitHeight : 0)
+    baselineOffset: contentItem.y + contentItem.baselineOffset
 
     padding: 6
     leftPadding: padding + (control.mirrored ? (up.indicator ? up.indicator.width : 0) : (down.indicator ? down.indicator.width : 0))
@@ -63,12 +64,13 @@ T.SpinBox {
 
     contentItem: TextInput {
         z: 2
-        text: control.displayText
+        text: control.textFromValue(control.value, control.locale)
+        opacity: control.enabled ? 1 : 0.3
 
         font: control.font
-        color: control.palette.text
-        selectionColor: control.palette.highlight
-        selectedTextColor: control.palette.highlightedText
+        color: Default.textColor
+        selectionColor: Default.focusColor
+        selectedTextColor: Default.textLightColor
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
 
@@ -77,13 +79,13 @@ T.SpinBox {
         inputMethodHints: control.inputMethodHints
 
         Rectangle {
-            x: -6 - (control.down.indicator ? 1 : 0)
+            x: -6 - (down.indicator ? 1 : 0)
             y: -6
-            width: control.width - (control.up.indicator ? control.up.indicator.width - 1 : 0) - (control.down.indicator ? control.down.indicator.width - 1 : 0)
+            width: control.width - (up.indicator ? up.indicator.width - 1 : 0) - (down.indicator ? down.indicator.width - 1 : 0)
             height: control.height
             visible: control.activeFocus
             color: "transparent"
-            border.color: control.palette.highlight
+            border.color: Default.focusColor
             border.width: 2
         }
     }
@@ -93,21 +95,21 @@ T.SpinBox {
         height: parent.height
         implicitWidth: 40
         implicitHeight: 40
-        color: control.up.pressed ? control.palette.mid : control.palette.button
+        color: up.pressed ? Default.buttonPressedColor : Default.buttonColor
 
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
             width: parent.width / 3
             height: 2
-            color: enabled ? control.palette.buttonText : control.palette.mid
+            color: enabled ? Default.textColor : Default.textDisabledColor
         }
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
             width: 2
             height: parent.width / 3
-            color: enabled ? control.palette.buttonText : control.palette.mid
+            color: enabled ? Default.textColor : Default.textDisabledColor
         }
     }
 
@@ -116,20 +118,19 @@ T.SpinBox {
         height: parent.height
         implicitWidth: 40
         implicitHeight: 40
-        color: control.down.pressed ? control.palette.mid : control.palette.button
+        color: down.pressed ? Default.buttonPressedColor : Default.buttonColor
 
         Rectangle {
             x: (parent.width - width) / 2
             y: (parent.height - height) / 2
             width: parent.width / 3
             height: 2
-            color: enabled ? control.palette.buttonText : control.palette.mid
+            color: enabled ? Default.textColor : Default.textDisabledColor
         }
     }
 
     background: Rectangle {
         implicitWidth: 140
-        color: enabled ? control.palette.base : control.palette.button
-        border.color: control.palette.button
+        border.color: Default.buttonColor
     }
 }

@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtGraphicalEffects.private 1.12
+import QtQuick 2.0
+import QtGraphicalEffects.private 1.0
 
 /*!
     \qmltype RadialGradient
@@ -85,10 +85,7 @@ Item {
     property bool cached: false
 
     /*!
-        \qmlproperty real RadialGradient::horizontalOffset
-        \qmlproperty real RadialGradient::verticalOffset
-
-        The horizontalOffset and verticalOffset properties define the offset in
+        The HorizontalOffset and verticalOffset properties define the offset in
         pixels for the center point of the gradient compared to the item center.
 
         The values range from -inf to inf. By default, these properties are set
@@ -130,10 +127,7 @@ Item {
     property real verticalOffset: 0.0
 
     /*!
-        \qmlproperty real RadialGradient::horizontalRadius
-        \qmlproperty real RadialGradient::verticalRadius
-
-        The horizontalRadius and verticalRadius properties define the shape and
+        The HorizontalRadius and verticalRadius properties define the shape and
         size of the radial gradient. If the radiuses are equal, the shape of the
         gradient is a circle. If the horizontal and vertical radiuses differ,
         the shape is elliptical. The radiuses are given in pixels.
@@ -398,13 +392,68 @@ Item {
 
         anchors.fill: parent
 
-        vertexShader: "qrc:/qt-project.org/imports/QtGraphicalEffects/shaders/radialgradient.vert"
+        vertexShader: "
+            attribute highp vec4 qt_Vertex;
+            attribute highp vec2 qt_MultiTexCoord0;
+            uniform highp mat4 qt_Matrix;
+            uniform highp vec2 matrixData;
+            uniform highp float horizontalRatio;
+            uniform highp float verticalRatio;
+            uniform highp vec2 center;
+            varying highp vec2 qt_TexCoord0;
+            varying highp vec2 qt_TexCoord1;
+            varying highp vec2 centerPoint;
+
+            void main() {
+                highp vec2 ratio = vec2(horizontalRatio, verticalRatio);
+
+                // Rotation matrix
+                highp mat2 rot = mat2(matrixData.y, -matrixData.x,
+                                      matrixData.x,  matrixData.y);
+
+                qt_TexCoord0 = qt_MultiTexCoord0;
+
+                qt_TexCoord1 = qt_MultiTexCoord0;
+                qt_TexCoord1 -= center;
+                qt_TexCoord1 *= rot;
+                qt_TexCoord1 += center;
+                qt_TexCoord1 *= ratio;
+
+                centerPoint = center * ratio;
+
+                gl_Position = qt_Matrix * qt_Vertex;
+            }
+        "
 
         fragmentShader: maskSource == undefined ? noMaskShader : maskShader
 
         onFragmentShaderChanged: horizontalRatioChanged()
 
-        property string maskShader: "qrc:/qt-project.org/imports/QtGraphicalEffects/shaders/radialgradient_mask.frag"
-        property string noMaskShader: "qrc:/qt-project.org/imports/QtGraphicalEffects/shaders/radialgradient_nomask.frag"
+        property string maskShader: "
+            uniform lowp sampler2D gradientImage;
+            uniform lowp sampler2D maskSource;
+            uniform lowp float qt_Opacity;
+            varying highp vec2 qt_TexCoord0;
+            varying highp vec2 qt_TexCoord1;
+            varying highp vec2 centerPoint;
+
+            void main() {
+                lowp vec4 gradientColor = texture2D(gradientImage, vec2(0.0, 2.0 * distance(qt_TexCoord1, centerPoint)));
+                lowp float maskAlpha = texture2D(maskSource, qt_TexCoord0).a;
+                gl_FragColor = gradientColor * maskAlpha * qt_Opacity;
+            }
+        "
+
+        property string noMaskShader: "
+            uniform lowp sampler2D gradientImage;
+            uniform lowp float qt_Opacity;
+            varying highp vec2 qt_TexCoord1;
+            varying highp vec2 centerPoint;
+
+            void main() {
+                lowp vec4 gradientColor = texture2D(gradientImage, vec2(0.0, 2.0 * distance(qt_TexCoord1, centerPoint)));
+                gl_FragColor = gradientColor * qt_Opacity;
+            }
+        "
     }
 }

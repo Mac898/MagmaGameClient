@@ -37,7 +37,6 @@
 **
 ****************************************************************************/
 
-import QtQml 2.14 as Qml
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
@@ -69,36 +68,36 @@ Item {
 
     anchors.fill: parent
 
-    Timer {
-        id: layoutTimer
-        interval: 0;
-        onTriggered: {
+    property bool recursionGuard: false
+
+    function doLayout() {
+        if (!recursionGuard) {
+            recursionGuard = true
             blockUpdates = true;
             scrollHelper.contentWidth = flickableItem !== null ? flickableItem.contentWidth : 0
             scrollHelper.contentHeight = flickableItem !== null ? flickableItem.contentHeight : 0
             scrollHelper.availableWidth = viewport.width
             scrollHelper.availableHeight = viewport.height
             blockUpdates = false;
-            hscrollbar.valueChanged();
-            vscrollbar.valueChanged();
+            recursionGuard = false
         }
     }
 
     Connections {
         target: viewport
-        function onWidthChanged() { layoutTimer.running = true }
-        function onHeightChanged() { layoutTimer.running = true }
+        onWidthChanged: doLayout()
+        onHeightChanged: doLayout()
     }
 
     Connections {
         target: flickableItem
-        function onContentWidthChanged() { layoutTimer.running = true }
-        function onContentHeightChanged() { layoutTimer.running = true }
-        function onContentXChanged() {
+        onContentWidthChanged: doLayout()
+        onContentHeightChanged: doLayout()
+        onContentXChanged: {
             hscrollbar.flash()
             vscrollbar.flash()
         }
-        function onContentYChanged() {
+        onContentYChanged: {
             hscrollbar.flash()
             vscrollbar.flash()
         }
@@ -136,31 +135,26 @@ Item {
         anchors.leftMargin:  leftMargin
         anchors.bottomMargin: bottomMargin
         onScrollAmountChanged: {
-            var scrollableAmount = scrollable ? scrollAmount : 0
             if (flickableItem && (flickableItem.atXBeginning || flickableItem.atXEnd)) {
-                value = Math.min(scrollableAmount, flickableItem.contentX - flickableItem.originX);
-            } else if (value > scrollableAmount) {
-                value = scrollableAmount;
+                value = flickableItem.contentX - flickableItem.originX
             }
         }
         onValueChanged: {
-            if (flickableItem && !blockUpdates) {
+            if (!blockUpdates) {
                 flickableItem.contentX = value + flickableItem.originX
             }
         }
-        Qml.Binding {
+        Binding {
             target: hscrollbar.__panel
             property: "raised"
             value: vscrollbar.active || scrollHelper.active
             when: hscrollbar.isTransient
-            restoreMode: Binding.RestoreBinding
         }
-        Qml.Binding {
+        Binding {
             target: hscrollbar.__panel
             property: "visible"
             value: true
             when: !hscrollbar.isTransient || scrollHelper.active
-            restoreMode: Binding.RestoreBinding
         }
         function flash() {
             if (hscrollbar.isTransient) {
@@ -204,19 +198,17 @@ Item {
                 flickableItem.contentY = value + flickableItem.originY
             }
         }
-        Qml.Binding {
+        Binding {
             target: vscrollbar.__panel
             property: "raised"
             value: hscrollbar.active || scrollHelper.active
             when: vscrollbar.isTransient
-            restoreMode: Binding.RestoreBinding
         }
-        Qml.Binding {
+        Binding {
             target: vscrollbar.__panel
             property: "visible"
             value: true
             when: !vscrollbar.isTransient || scrollHelper.active
-            restoreMode: Binding.RestoreBinding
         }
         function flash() {
             if (vscrollbar.isTransient) {

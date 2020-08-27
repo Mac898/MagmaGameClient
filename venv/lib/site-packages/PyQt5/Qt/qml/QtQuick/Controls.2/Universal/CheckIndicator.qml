@@ -34,14 +34,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Controls.Universal 2.12
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
+import QtQuick.Controls.Universal 2.2
 
 Rectangle {
-    id: indicator
     implicitWidth: 20
     implicitHeight: 20
 
@@ -56,27 +53,28 @@ Rectangle {
     property Item control
     readonly property bool partiallyChecked: control.checkState === Qt.PartiallyChecked
 
-    ColorImage {
+    Image {
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
 
-        visible: indicator.control.checkState === Qt.Checked
-        color: !indicator.control.enabled ? indicator.control.Universal.baseLowColor : indicator.control.Universal.chromeWhiteColor
-        source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/Universal/images/checkmark.png"
+        visible: control.checkState === Qt.Checked
+        source: "image://universal/checkmark/" + (!control.enabled ? control.Universal.baseLowColor : control.Universal.chromeWhiteColor)
+        sourceSize.width: width
+        sourceSize.height: height
     }
 
     Rectangle {
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
-        width: indicator.partiallyChecked ? parent.width / 2 : parent.width
-        height: indicator.partiallyChecked ? parent.height / 2 : parent.height
+        width: partiallyChecked ? parent.width / 2 : parent.width
+        height: partiallyChecked ? parent.height / 2 : parent.height
 
-        visible: !indicator.control.pressed && indicator.control.hovered || indicator.partiallyChecked
-        color: !indicator.partiallyChecked ? "transparent" :
-               !indicator.control.enabled ? indicator.control.Universal.baseLowColor :
-                indicator.control.down ? indicator.control.Universal.baseMediumColor :
-                indicator.control.hovered ? indicator.control.Universal.baseHighColor : indicator.control.Universal.baseMediumHighColor
-        border.width: indicator.partiallyChecked ? 0 : 2 // CheckBoxBorderThemeThickness
-        border.color: indicator.control.Universal.baseMediumLowColor
+        visible: !control.pressed && control.hovered || partiallyChecked
+        color: !partiallyChecked ? "transparent" :
+               !control.enabled ? control.Universal.baseLowColor :
+                control.down ? control.Universal.baseMediumColor :
+                control.hovered ? control.Universal.baseHighColor : control.Universal.baseMediumHighColor
+        border.width: partiallyChecked ? 0 : 2 // CheckBoxBorderThemeThickness
+        border.color: control.Universal.baseMediumLowColor
     }
 }

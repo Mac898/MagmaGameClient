@@ -34,27 +34,27 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick 2.9
+import QtQuick.Controls 2.2
+import QtQuick.Controls.impl 2.2
+import QtQuick.Templates 2.2 as T
 
 T.TextField {
     id: control
 
-    implicitWidth: implicitBackgroundWidth + leftInset + rightInset
-                   || Math.max(contentWidth, placeholder.implicitWidth) + leftPadding + rightPadding
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             contentHeight + topPadding + bottomPadding,
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                            placeholderText ? placeholder.implicitWidth + leftPadding + rightPadding : 0)
+                            || contentWidth + leftPadding + rightPadding
+    implicitHeight: Math.max(contentHeight + topPadding + bottomPadding,
+                             background ? background.implicitHeight : 0,
                              placeholder.implicitHeight + topPadding + bottomPadding)
 
     padding: 6
     leftPadding: padding + 4
 
-    color: control.palette.text
-    selectionColor: control.palette.highlight
-    selectedTextColor: control.palette.highlightedText
-    placeholderTextColor: Color.transparent(control.color, 0.5)
+    color: enabled ? Default.textColor : Default.textDisabledColor
+    selectionColor: Default.textSelectionColor
+    selectedTextColor: color
     verticalAlignment: TextInput.AlignVCenter
 
     PlaceholderText {
@@ -66,18 +66,17 @@ T.TextField {
 
         text: control.placeholderText
         font: control.font
-        color: control.placeholderTextColor
+        color: enabled ? Default.textPlaceholderColor : Default.textDisabledColor
         verticalAlignment: control.verticalAlignment
         visible: !control.length && !control.preeditText && (!control.activeFocus || control.horizontalAlignment !== Qt.AlignHCenter)
         elide: Text.ElideRight
-        renderType: control.renderType
     }
 
     background: Rectangle {
         implicitWidth: 200
         implicitHeight: 40
         border.width: control.activeFocus ? 2 : 1
-        color: control.palette.base
-        border.color: control.activeFocus ? control.palette.highlight : control.palette.mid
+        color: control.enabled ? Default.backgroundColor : Default.indicatorFrameDisabledColor
+        border.color: control.activeFocus ? Default.focusColor : (control.enabled ? Default.disabledLightColor : "transparent")
     }
 }
