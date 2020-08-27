@@ -1,5 +1,6 @@
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QMainWindow
+from pyqt5.QtCore import Qtimer
 
 import Ui_chat
 import Ui_main
@@ -33,6 +34,11 @@ if __name__ == '__main__':
     #sys.stdout set
     text_browser = uimain.textBrowser
     sys.stdout = port(text_browser)
+
+    #timer to allow Cntrl-C
+    timer = Qtimer()
+    timer.timeout.connect(lambda: None)
+    timer.start(100)
 
     exit_code = appctxt.app.exec_()
     sys.exit(exit_code)
