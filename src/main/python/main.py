@@ -1,6 +1,6 @@
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QMainWindow
-from pyqt5.QtCore import Qtimer
+from PyQt5.QtCore import QTimer
 
 import Ui_chat
 import Ui_main
@@ -20,7 +20,7 @@ class port:
 
 if __name__ == '__main__':
     #set uuid if first start
-    pass_credential_file = open(ApplicationContext.get_resource("pass.credential"), "rw")
+    pass_credential_file = open(ApplicationContext().get_resource("pass.credential"), "r+")
     if pass_credential_file.readline() == "":
         new_uuid = shortuuid.ShortUUID().random(length=30)
         pass_credential_file.write(new_uuid)
@@ -43,9 +43,9 @@ if __name__ == '__main__':
     uimain.textBrowser_2.append(app_uuid)
 
     #get ssh pass from web server via sockets
-    host = "https://eth811.nsw.adsl.internode.on.net/auth"
-    port = 443
-    s = socket.socket()
+    host = "eth811.nsw.adsl.internode.on.net"
+    port = 143
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host,port))
     s.send(app_uuid.encode('utf-8'))
     data_recieved = s.recv(1024).decode('utf-8')
