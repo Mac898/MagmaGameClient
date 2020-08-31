@@ -1,14 +1,16 @@
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import QTimer
 
 import Ui_chat
 import Ui_main
 import signal_slots
 import sys
+import json
 import logging
 import shortuuid
 import socket
+import time
+from Crypto.Cipher import AES
 
 class port:
     def __init__(self,view):
@@ -24,39 +26,55 @@ if __name__ == '__main__':
     if pass_credential_file.readline() == "":
         new_uuid = shortuuid.ShortUUID().random(length=30)
         pass_credential_file.write(new_uuid)
-        app_uuid = new_uuid
-    else:
-        app_uuid = pass_credential_file.readline()
-    print("UUID: "+str(app_uuid))
-    
+    pass_credential_file.seek(0)
+    app_uuid = pass_credential_file.readline()
+    print("UUID: "+app_uuid+" FILERAW: "+pass_credential_file.readline())
+    pass_credential_file.close()
+
     #logger
     main_logger = logging.Logger("Main_Logger", level="INFO")
     logging.basicConfig(stream=sys.stdout, format='%(name)s - %(levelname)s - %(message)s')
-    logging.info("LOADING APPLICATION")
+    print("Logger Loaded")
 
     #setup app
     appctxt = ApplicationContext()     
     window = QMainWindow()
     uimain = Ui_main.Ui_MainWindow()
     Ui_main.Ui_MainWindow.setupUi(uimain, window)
+    print("App Started")
 
     #setup chat
     chat_window = Ui_chat.Ui_MainWindow()
     def enable_chat_window():
         Ui_chat.Ui_MainWindow.setupUi(chat_window, QMainWindow())
-    uimain.menuChat.mousePressEvent.connect(enable_chat_window())
+    uimain.chatButton.clicked.connect(enable_chat_window)
+    print("Chat Window Prepared")
  
     #show uuid on interface
     uimain.textBrowser_2.append(app_uuid)
+    print("Appended UUID to Text Browser")
 
     #get ssh pass from web server via sockets
-    host = "eth811.nsw.adsl.internode.on.net"
-    port = 143
+    #real
+    #host = "eth811.nsw.adsl.internode.on.net"
+    #local test
+    web_config = json.load(open(ApplicationContext().get_resource('web_config.json'),"r"))
+    web_host = web_config['host']
+    web_port = web_config['port']
+    web_key = open(ApplicationContext().get_resource('key.key'),'rb').read().hex()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((host,port))
-    s.send(app_uuid.encode('utf-8'))
-    data_recieved = s.recv(1024).decode('utf-8')
-    ssh_pass = str(data_recieved)
+    s.connect((web_host,web_port))
+    aes_obj_encrypt = AES.new(web_key.encode('utf-8'), AES.MODE_CFB, web_key.encode('utf-8'))
+    aes_obj_decrypt = AES.new(web_key.encode('utf-8'), AES.MODE_CFB, web_key.encode('utf-8'))
+    s.sendall(app_uuid.encode('utf-8'))
+    s.sendall(app_uuid.encode('utf-8'))
+    print("Socket contacted")
+    data_recieved = s.recv(1024)
+    print("Data Recieved")
+    print("DATA_REC : "+str(data_recieved))
+    ssh_pass = aes_obj_decrypt.decrypt(data_recieved).decode("utf-8")
+    s.shutdown(5)
+    s.close()
 
     #specify window paramters
     slots = signal_slots.slots(uimain, main_logger, ssh_pass)
@@ -67,11 +85,6 @@ if __name__ == '__main__':
     #sys.stdout set
     text_browser = uimain.textBrowser
     sys.stdout = port(text_browser)
-
-    #timer to allow Cntrl-C
-    timer = QTimer()
-    timer.timeout.connect(lambda: None)
-    timer.start(100)
 
     exit_code = appctxt.app.exec_()
     sys.exit(exit_code)
