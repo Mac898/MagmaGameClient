@@ -27,6 +27,7 @@ if __name__ == '__main__':
         app_uuid = new_uuid
     else:
         app_uuid = pass_credential_file.readline()
+    print("UUID: "+str(app_uuid))
     
     #logger
     main_logger = logging.Logger("Main_Logger", level="INFO")
@@ -39,13 +40,25 @@ if __name__ == '__main__':
     uimain = Ui_main.Ui_MainWindow()
     Ui_main.Ui_MainWindow.setupUi(uimain, window)
 
+    #setup chat
+    chat_window = Ui_chat.Ui_MainWindow()
+    def enable_chat_window():
+        Ui_chat.Ui_MainWindow.setupUi(chat_window, QMainWindow())
+    uimain.menuChat.mousePressEvent.connect(enable_chat_window())
+ 
     #show uuid on interface
     uimain.textBrowser_2.append(app_uuid)
 
     #get ssh pass from web server via sockets
+<<<<<<< HEAD
     host = "eth811.nsw.adsl.internode.on.net"
     port = 143
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+=======
+    host = "https://eth811.nsw.adsl.internode.on.net/auth"
+    port = 143
+    s = socket.socket()
+>>>>>>> 85a569d15d201161e264f79ccc0ed1cdba939140
     s.connect((host,port))
     s.send(app_uuid.encode('utf-8'))
     data_recieved = s.recv(1024).decode('utf-8')
@@ -62,7 +75,7 @@ if __name__ == '__main__':
     sys.stdout = port(text_browser)
 
     #timer to allow Cntrl-C
-    timer = Qtimer()
+    timer = QTimer()
     timer.timeout.connect(lambda: None)
     timer.start(100)
 
