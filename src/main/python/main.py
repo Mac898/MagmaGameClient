@@ -1,6 +1,6 @@
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from PyQt5.QtWidgets import QMainWindow
-from pyqt5.QtCore import Qtimer
+from PyQt5.QtCore import QTimer
 
 import Ui_chat
 import Ui_main
@@ -20,13 +20,14 @@ class port:
 
 if __name__ == '__main__':
     #set uuid if first start
-    pass_credential_file = open(ApplicationContext.get_resource("pass.credential"), "rw")
+    pass_credential_file = open(ApplicationContext().get_resource("pass.credential"), "r+")
     if pass_credential_file.readline() == "":
         new_uuid = shortuuid.ShortUUID().random(length=30)
         pass_credential_file.write(new_uuid)
         app_uuid = new_uuid
     else:
         app_uuid = pass_credential_file.readline()
+    print("UUID: "+str(app_uuid))
     
     #logger
     main_logger = logging.Logger("Main_Logger", level="INFO")
@@ -39,12 +40,18 @@ if __name__ == '__main__':
     uimain = Ui_main.Ui_MainWindow()
     Ui_main.Ui_MainWindow.setupUi(uimain, window)
 
+    #setup chat
+    chat_window = Ui_chat.Ui_MainWindow()
+    def enable_chat_window():
+        Ui_chat.Ui_MainWindow.setupUi(chat_window, QMainWindow())
+    uimain.menuChat.mousePressEvent.connect(enable_chat_window())
+ 
     #show uuid on interface
     uimain.textBrowser_2.append(app_uuid)
 
     #get ssh pass from web server via sockets
     host = "https://eth811.nsw.adsl.internode.on.net/auth"
-    port = 443
+    port = 143
     s = socket.socket()
     s.connect((host,port))
     s.send(app_uuid.encode('utf-8'))
@@ -62,7 +69,7 @@ if __name__ == '__main__':
     sys.stdout = port(text_browser)
 
     #timer to allow Cntrl-C
-    timer = Qtimer()
+    timer = QTimer()
     timer.timeout.connect(lambda: None)
     timer.start(100)
 
