@@ -50,15 +50,9 @@ if __name__ == '__main__':
     uimain.textBrowser_2.append(app_uuid)
 
     #get ssh pass from web server via sockets
-<<<<<<< HEAD
     host = "eth811.nsw.adsl.internode.on.net"
     port = 143
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-=======
-    host = "https://eth811.nsw.adsl.internode.on.net/auth"
-    port = 143
-    s = socket.socket()
->>>>>>> 85a569d15d201161e264f79ccc0ed1cdba939140
     s.connect((host,port))
     s.send(app_uuid.encode('utf-8'))
     data_recieved = s.recv(1024).decode('utf-8')
