@@ -1,16 +1,19 @@
-from fbs_runtime.application_context.PyQt5 import ApplicationContext
-from PyQt5.QtWidgets import QMainWindow
-
-import Ui_chat
-import Ui_main
-import signal_slots
+#sys imports
 import sys
 import json
 import logging
-import shortuuid
 import socket
+import shortuuid
 import time
 from Crypto.Cipher import AES
+#file imports
+import Ui_chat
+import Ui_main
+import signal_slots
+from PyQt5.QtWidgets import QMainWindow
+#runtime imports
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
+
 
 class port:
     def __init__(self,view):
@@ -72,13 +75,13 @@ if __name__ == '__main__':
     data_recieved = s.recv(1024)
     print("Data Recieved")
     print("DATA_REC : "+str(data_recieved))
-    ssh_pass = aes_obj_decrypt.decrypt(data_recieved).decode("utf-8")
-    s.shutdown(5)
+    ssh_pass = aes_obj_decrypt.decrypt(data_recieved).decode("utf-8", errors="ignore")
+    s.shutdown(socket.SHUT_WR)
     s.close()
 
     #specify window paramters
     slots = signal_slots.slots(uimain, main_logger, ssh_pass)
-    window.resize(563, 568)
+    window.resize(600, 620)
     window.setWindowTitle("Magma Game Client")
     window.show()
 

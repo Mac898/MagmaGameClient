@@ -1,5 +1,6 @@
 import sys, json
 import magmaGS
+import python_hosts
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 class magmaGC_actions:
@@ -12,6 +13,7 @@ class magmaGC_actions:
         self.actions_config_file = open(ApplicationContext().get_resource("actions_config.json"))
         self.actions_config = json.load(self.actions_config_file)
         print(self.actions_config)
+        self.hosts_file = python_hosts.Hosts()
 
     #pass through logging function
 
@@ -21,25 +23,35 @@ class magmaGC_actions:
         if self.uimain.factorioCheckBox.isChecked():
             print("Connecting Factorio!")
             self.ssh_tunnel.stop()
-            self.ssh_tunnel.add_remote_bind(factorio_port)
+            self.ssh_tunnel.add_remote_bind(factorio_port, factorio_port)
             self.ssh_tunnel.start()
         else:
             print("Disconnecting Factorio!")
             self.ssh_tunnel.stop()
-            self.ssh_tunnel.remove_remote_bind(factorio_port)
+            self.ssh_tunnel.remove_remote_bind(factorio_port, factorio_port)
             self.ssh_tunnel.start()
 
     def minecraft_connect(self):
+        mc_auth_host_names = ['authserver.mojang.com', 'launchermeta.mojang.com']
+        minecraft_hosts = python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.1', names= mc_auth_host_names)
         minecraft_port = self.actions_config['minecraft']
+        minecraft_auth_port = self.actions_config['minecraft_auth']
         if self.uimain.minecraftCheckBox.isChecked():
             print("Connecting Minecraft!")
+            self.hosts_file.add([minecraft_hosts])
+            self.hosts_file.write()
             self.ssh_tunnel.stop()
-            self.ssh_tunnel.add_remote_bind(minecraft_port)
+            self.ssh_tunnel.add_remote_bind(minecraft_port,minecraft_port)
+            self.ssh_tunnel.add_remote_bind("443", minecraft_auth_port)
             self.ssh_tunnel.start()
         else:
             print("Disconnecting Minecraft!")
+            self.hosts_file.remove_all_matching(name=mc_auth_host_names[0])
+            self.hosts_file.remove_all_matching(name=mc_auth_host_names[1])
+            self.hosts_file.write()
             self.ssh_tunnel.stop()
-            self.ssh_tunnel.remove_remote_bind(minecraft_port)
+            self.ssh_tunnel.remove_remote_bind(minecraft_port, minecraft_port)
+            self.ssh_tunnel.remove_remote_bind("443", minecraft_auth_port)
             self.ssh_tunnel.start()
     def custom_connect(self, num, port, custom_checkbox_list):
         custom_port = port
@@ -47,12 +59,10 @@ class magmaGC_actions:
         if custom_checkbox_list[list_num].isChecked():
             print("Connecting Custom forward: "+str(num))
             self.ssh_tunnel.stop()
-            self.ssh_tunnel.add_remote_bind(custom_port)
+            self.ssh_tunnel.add_remote_bind(custom_port, custom_port)
             self.ssh_tunnel.start()
         else:
             print("Disconnecting Custom forward: "+str(num))
             self.ssh_tunnel.stop()
-            self.ssh_tunnel.remove_remote_bind(custom_port)
+            self.ssh_tunnel.remove_remote_bind(custom_port, custom_port)
             self.ssh_tunnel.start()
-
-
