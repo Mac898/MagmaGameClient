@@ -5,5 +5,7 @@
     "version": "0.2.0",
     "gpg_key": "EE9D2AEB0D16BD8139C47EAF8F569FE5D85009FB",
     "gpg_name": "Mac",
-    "hidden_imports": ["sshtunnel"]
+    "hidden_imports": ["sshtunnel"],
+    "sentry_dsn": "https://78e801d5a01540caa671450a65e7306d@o443006.ingest.sentry.io/5415861",
+    "public_settings": ["sentry_dsn", "version", "environment"]
 }

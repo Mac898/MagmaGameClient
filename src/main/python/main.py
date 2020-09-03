@@ -13,7 +13,16 @@ import signal_slots
 from PyQt5.QtWidgets import QMainWindow
 #runtime imports
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
+from fbs_runtime.excepthook.sentry import SentryExceptionHandler
+from fbs_runtime import platform
+from fbs_runtime.application_context import cached_property, is_frozen
+import sentry_sdk
 
+#sentry init
+sentry_sdk.init(
+    "https://78e801d5a01540caa671450a65e7306d@o443006.ingest.sentry.io/5415861",
+    traces_sample_rate=1.0
+)
 
 class port:
     def __init__(self,view):
@@ -21,6 +30,24 @@ class port:
 
     def write(self,*args):
         self.view.append(*args)
+
+class AppContext(ApplicationContext):
+    @cached_property
+    def exception_handlers(self):
+        result = super().exception_handlers
+        if is_frozen():
+            result.append(self.sentry_exception_handler)
+        return result
+    @cached_property
+    def sentry_exception_handler(self):
+        return SentryExceptionHandler(
+            self.build_settings['sentry_dsn'],
+            self.build_settings['version'],
+            self.build_settings['environment'],
+            callback=self._on_sentry_init)
+    def _on_sentry_init(self):
+        scope = self.sentry_exception_handler.scope
+        scope.set_extra('os', platform.name())    
 
 
 if __name__ == '__main__':
