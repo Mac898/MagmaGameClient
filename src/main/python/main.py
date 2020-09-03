@@ -16,13 +16,6 @@ from fbs_runtime.application_context.PyQt5 import ApplicationContext
 from fbs_runtime.excepthook.sentry import SentryExceptionHandler
 from fbs_runtime import platform
 from fbs_runtime.application_context import cached_property, is_frozen
-import sentry_sdk
-
-#sentry init
-sentry_sdk.init(
-    "https://78e801d5a01540caa671450a65e7306d@o443006.ingest.sentry.io/5415861",
-    traces_sample_rate=1.0
-)
 
 class port:
     def __init__(self,view):
