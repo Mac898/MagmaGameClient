@@ -1,5 +1,10 @@
 {
     "factorio": 34197,
-    "minecraft": 25565,
-    "minecraft_auth": 37550
+    "minecraft": 25566,
+    "minecraft_modded": 25565,
+    "minecraft_auth_authserver": 37000,
+    "minecraft_auth_sessionserver": 37001,
+    "minecraft_auth_launchermeta": 37002,
+    "minecraft_auth_accounts": 37003,
+    "minecraft_auth_multimc": 37004
 }

@@ -32,17 +32,17 @@ class magmaGS:
         )
 
     #add remote bind
-    def add_remote_bind(self, local_bind, remote_bind):
-        to_add = ("127.0.0.1", int(remote_bind))
-        to_add_local = ("127.0.0.1", int(local_bind))
+    def add_remote_bind(self, local_bind, remote_bind, ip="127.0.0.1"):
+        to_add = (ip, int(remote_bind))
+        to_add_local = (ip, int(local_bind))
         self.remote_list.append(to_add)
         self.local_list.append(to_add_local)
         print("Adding remote bind: "+str(to_add))
         
     #remove remote bind
-    def remove_remote_bind(self, local_bind, remote_bind):
-        to_remove = ("127.0.0.1", int(remote_bind))
-        to_remove_local = ("127.0.0.1", int(local_bind))
+    def remove_remote_bind(self, local_bind, remote_bind, ip="127.0.0.1"):
+        to_remove = (ip, int(remote_bind))
+        to_remove_local = (ip, int(local_bind))
         print("Removing remote bind: "+str(to_remove))
         try:
             self.remote_list.remove(to_remove)

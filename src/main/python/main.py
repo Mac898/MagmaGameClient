@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     #specify window paramters
     slots = signal_slots.slots(uimain, main_logger, ssh_pass)
-    window.resize(600, 620)
+    window.resize(609, 614)
     window.setWindowTitle("Magma Game Client")
     window.show()
 

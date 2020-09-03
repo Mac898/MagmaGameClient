@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Code\MagmaGameClient\src\main\python\main.ui'
+# Form implementation generated from reading ui file '/media/mac/Data/code/MagmaGameClient/src/main/python/main.ui'
 #
-# Created by: PyQt5 UI code generator 5.14.2
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(556, 614)
+        MainWindow.resize(609, 614)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 380, 541, 155))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 380, 591, 170))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -98,7 +98,7 @@ class Ui_MainWindow(object):
         self.label_13.setObjectName("label_13")
         self.gridLayout.addWidget(self.label_13, 0, 2, 1, 1)
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(330, 60, 221, 291))
+        self.textBrowser.setGeometry(QtCore.QRect(400, 60, 201, 291))
         self.textBrowser.setObjectName("textBrowser")
         self.label_10 = QtWidgets.QLabel(self.centralwidget)
         self.label_10.setGeometry(QtCore.QRect(318, 5, 231, 51))
@@ -108,11 +108,11 @@ class Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignCenter)
         self.label_10.setObjectName("label_10")
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(10, 60, 312, 291))
+        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(10, 60, 387, 291))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
-        self.gridLayout_2.setContentsMargins(5, 5, 5, 5)
-        self.gridLayout_2.setHorizontalSpacing(20)
+        self.gridLayout_2.setContentsMargins(2, 5, 2, 5)
+        self.gridLayout_2.setHorizontalSpacing(10)
         self.gridLayout_2.setVerticalSpacing(2)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.minecraftCheckBox = QtWidgets.QCheckBox(self.gridLayoutWidget_2)
@@ -152,13 +152,13 @@ class Ui_MainWindow(object):
         self.label_16.setObjectName("label_16")
         self.gridLayout_2.addWidget(self.label_16, 0, 2, 1, 1)
         self.label_17 = QtWidgets.QLabel(self.centralwidget)
-        self.label_17.setGeometry(QtCore.QRect(10, 530, 121, 50))
+        self.label_17.setGeometry(QtCore.QRect(10, 540, 121, 50))
         font = QtGui.QFont()
         font.setPointSize(28)
         self.label_17.setFont(font)
         self.label_17.setObjectName("label_17")
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser_2.setGeometry(QtCore.QRect(100, 540, 451, 31))
+        self.textBrowser_2.setGeometry(QtCore.QRect(100, 550, 501, 31))
         self.textBrowser_2.setObjectName("textBrowser_2")
         self.chatButton = QtWidgets.QPushButton(self.centralwidget)
         self.chatButton.setGeometry(QtCore.QRect(480, 0, 75, 23))
@@ -198,11 +198,11 @@ class Ui_MainWindow(object):
         self.minecraftCheckBox.setText(_translate("MainWindow", "On/Off"))
         self.factorioCheckBox.setText(_translate("MainWindow", "On/Off"))
         self.factorioLabel.setText(_translate("MainWindow", "Factorio"))
-        self.label_2.setText(_translate("MainWindow", "IP: localhost:34197"))
-        self.label_3.setText(_translate("MainWindow", "IP: localhost:25565"))
+        self.label_2.setText(_translate("MainWindow", "34197"))
+        self.label_3.setText(_translate("MainWindow", "25565,25566"))
         self.minecraftLabel.setText(_translate("MainWindow", "Minecraft"))
         self.label_14.setText(_translate("MainWindow", "Game"))
         self.label_15.setText(_translate("MainWindow", "Toggle"))
-        self.label_16.setText(_translate("MainWindow", "Connection IP"))
+        self.label_16.setText(_translate("MainWindow", "Port"))
         self.label_17.setText(_translate("MainWindow", "UUID"))
         self.chatButton.setText(_translate("MainWindow", "Open Chat"))
