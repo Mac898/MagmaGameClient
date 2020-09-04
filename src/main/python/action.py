@@ -33,9 +33,17 @@ class magmaGC_actions:
 
     def minecraft_connect(self):
         #hosts
-        minecraft_hosts_entrys = [python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.2', names='authserver.mojang.com'),python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.3', names='sessionserver.mojang.com'),
-        python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.4', names='launchermeta.mojang.com'), python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.5', names='accounts.mojang.com'),
-        python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.6', names='meta.multimc.org')]
+        host_auth = python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.2', names="authserver.mojang.com")
+        host_session = python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.3', names="sessionserver.mojang.com")
+        host_meta = python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.4', names="launchermeta.mojang.com")
+        host_accounts = python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.5', names="accounts.mojang.com")
+        host_multimc = python_hosts.HostsEntry(entry_type='ipv4', address='127.0.0.6', names="meta.multimc.org")
+        #print hosts
+        print(str(host_auth))
+        print(str(host_session))
+        print(str(host_meta))
+        print(str(host_accounts))
+        print(str(host_multimc))
         #get ports
         minecraft_port = self.actions_config['minecraft']
         minecraft_modded_port = self.actions_config['minecraft_modded']
@@ -47,7 +55,11 @@ class magmaGC_actions:
         #begin actual stuff
         if self.uimain.minecraftCheckBox.isChecked():
             print("Connecting Minecraft!")
-            self.hosts_file.add(minecraft_hosts_entrys)
+            self.hosts_file.add([host_auth])
+            self.hosts_file.add([host_session])
+            self.hosts_file.add([host_meta])
+            self.hosts_file.add([host_accounts])
+            self.hosts_file.add([host_multimc])
             self.hosts_file.write()
             self.ssh_tunnel.stop()
             self.ssh_tunnel.add_remote_bind(minecraft_port,minecraft_port)
